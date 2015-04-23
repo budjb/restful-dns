@@ -1,10 +1,10 @@
 package restful.dns
 
-import com.budjb.dns.AuthoritativeLookupService
 import com.budjb.dns.datasource.MongoDbDatasource
 import com.budjb.dns.server.impl.DnsServerImpl
 import com.budjb.dns.server.impl.DnsServerComponentFactoryImpl
 import com.budjb.dns.util.ByteUtil
+import com.budjb.dns.zone.ZoneService
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
 
@@ -16,17 +16,23 @@ class Application extends GrailsAutoConfiguration {
     Closure doWithSpring() {
         { ->
             // DNS server bean
-            dnsNetworkServer(DnsServerImpl)
+            dnsNetworkServer(DnsServerImpl) {
+                // TODO: configuration injection
+            }
 
             // Byte conversion utility
             byteUtil(ByteUtil)
 
             // DNS server component factory
-            dnsServerComponentFactory(DnsServerComponentFactoryImpl)
+            dnsServerComponentFactory(DnsServerComponentFactoryImpl) {
+                // TODO: configuration injection
+            }
 
+            // MongoDB service
             mongoDbDatasource(MongoDbDatasource)
 
-            authoritativeLookupService(AuthoritativeLookupService)
+            // Zone lookup service
+            zoneService(ZoneService)
         }
     }
 

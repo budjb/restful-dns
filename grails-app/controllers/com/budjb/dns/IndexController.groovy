@@ -2,6 +2,7 @@ package com.budjb.dns
 
 import com.budjb.dns.datasource.MongoDbDatasource
 import com.budjb.dns.zone.Zone
+import com.budjb.dns.zone.ZoneService
 import com.budjb.dns.zone.record.AddressRecord
 import com.budjb.dns.zone.record.CnameRecord
 import com.budjb.dns.zone.record.SoaRecord
@@ -10,8 +11,7 @@ import org.bson.Document
 
 class IndexController {
     MongoDbDatasource mongoDbDatasource
-
-    AuthoritativeLookupService authoritativeLookupService
+    ZoneService zoneService
 
     def zone() {
         SoaRecord soa = new SoaRecord()
@@ -72,7 +72,7 @@ class IndexController {
     def getmongo() {
         render text: '', contentType: 'text/plain'
 
-        Zone zone = authoritativeLookupService.findZone(params.query)
+        Zone zone = zoneService.findZone(params.query)
 
         if (zone) {
             render new JsonBuilder(zone.toMap()).toPrettyString()
